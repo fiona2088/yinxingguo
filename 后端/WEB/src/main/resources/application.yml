@@ -1,0 +1,96 @@
+# 默认启用 dev 配置；生产环境请设置 SPRING_PROFILES_ACTIVE=prod 并通过环境变量注入密钥
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+
+  mail:
+    host: ${MAIL_HOST:smtp.qq.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL:jdbc:mysql://localhost:3306/A08?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:16379}
+      password: ${REDIS_PASSWORD:}
+
+  ai:
+    openai:
+      base-url: ${RAG_PROXY_BASE_URL:http://localhost:8080/rag-proxy}
+      api-key: ${RAG_API_KEY:}
+      chat:
+        options:
+          model: ${RAG_CHAT_MODEL:qwen3.5-flash-35b-a3b}
+    mcp:
+      client:
+        sse:
+          connections:
+            8081-server:
+              url: ${MCP_SERVER_URL:http://localhost:8081}
+
+  main:
+    web-application-type: servlet
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  web:
+    locale-resolver: fixed
+    locale: zh_CN
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.WebClient: DEBUG
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  public-base-url: ${APP_PUBLIC_BASE_URL:http://localhost:8080}
+  internal-api-key: ${INTERNAL_API_KEY:a08-internal-mcp-key-change-me}
+  cache:
+    database-list-ttl-minutes: ${CACHE_DB_LIST_TTL_MINUTES:30}
+    ttl-jitter-seconds-max: ${CACHE_TTL_JITTER_SECONDS:600}
+    lock-wait-millis: ${CACHE_LOCK_WAIT_MS:100}
+    lock-ttl-seconds: ${CACHE_LOCK_TTL_SECONDS:10}
+  jwt:
+    secret: ${JWT_SECRET:a08-demo-jwt-secret-key-must-be-at-least-32-chars!!}
+    expiration-hours: ${JWT_EXPIRATION_HOURS:24}
+  predict:
+    service-url: ${PREDICT_SERVICE_URL:http://127.0.0.1:9000/predict}
+  rag:
+    chat-completions-url: ${RAG_CHAT_COMPLETIONS_URL:http://localhost:9380/api/v1/agents_openai/REPLACE_AGENT_ID/chat/completions}
+  excel:
+    legacy-sample-dir: ${EXCEL_LEGACY_SAMPLE_DIR:}
+    legacy-sample-file-name: ${EXCEL_LEGACY_SAMPLE_FILE:2024-01-E_total}
+  mcp:
+    server-url: ${MCP_SERVER_URL:http://localhost:8081}
+  chat:
+    memory-store: ${CHAT_MEMORY_STORE:redis}
+    conversation-ttl-hours: ${CHAT_CONVERSATION_TTL_HOURS:24}
+    max-stored-messages: ${CHAT_MAX_STORED_MESSAGES:100}
+    advisor-message-window: ${CHAT_ADVISOR_MESSAGE_WINDOW:20}

@@ -1,0 +1,19 @@
+# 复制本文件为 application-dev.yml，填入本机真实配置（application-dev.yml 建议加入 .gitignore）
+spring:
+  datasource:
+    password: your_mysql_password
+  mail:
+    username: your_qq_email@qq.com
+    password: your_qq_smtp_auth_code
+  ai:
+    openai:
+      api-key: your_ragflow_api_key
+
+app:
+  public-base-url: http://localhost:8080
+  predict:
+    service-url: http://127.0.0.1:9000/predict
+  rag:
+    chat-completions-url: http://your-rag-host:9380/api/v1/agents_openai/YOUR_AGENT_ID/chat/completions
+  excel:
+    legacy-sample-dir: D:/optional/path/to/sample/excel

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mcp.Mapper">
+
+    <select id="searchByCondition" resultType="map">
+        SELECT ${columnName} FROM ${tableName}
+        <where>
+            <if test="buildingName != null and buildingName != ''">
+                AND Building_ID LIKE CONCAT('%', #{buildingName}, '%')
+            </if>
+
+            <if test="beginDatetime != null and beginDatetime != ''">
+                AND Time >= #{beginDatetime}
+            </if>
+
+            <if test="endDatetime != null and endDatetime != ''">
+                AND Time &lt;= #{endDatetime}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>
